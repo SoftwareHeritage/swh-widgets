@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import SearchOrigins from './widgets/Search';
+import Directory from './widgets/Directory';
+import Origins from './widgets/Origins';
+import { Row, Col } from 'antd';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Row gutter={16}>
+      {/* <div> */}
+      {/*   <SearchOrigins /> */}
+      {/* </div> */}
+      <Col className="gutter-row" span={8}>
+        <Directory dirSWHID="swh:1:dir:03b8fa5c5bf1ec7cfc538e2a442e5610438e2955" />
+      </Col>
+
+      <Col className="gutter-row" span={8}>
+        <Directory dirSWHID="swh:1:dir:4c1394ffe602a0f9c6c5fa43d3ee91577f0b9003" />
+      </Col>
+
+      <Col className="gutter-row" span={8}>
+        <SearchOrigins />
+      </Col>
+      {/* <div> */}
+      {/*   <Origins /> */}
+      {/* </div> */}
+    </Row>
   );
 }
 
