@@ -37,7 +37,7 @@ const DIR_QUERY = gql`
 
 const { Text, Link } = Typography;
 
-class Directory extends React.Component {
+class DirectoryWidget extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -45,6 +45,10 @@ class Directory extends React.Component {
   dirListItem = (edge) => {
     return (
       <List.Item.Meta
+        style={{cursor: "pointer"}}
+        onClick={() =>
+          this.props.loadWidget("directory", {swhid: edge.node.target.swhid})
+        }
         avatar={<Avatar icon={<FolderOutlined />}
                         style={{ backgroundColor: '#f56a00' }}
                         shape="square"
@@ -58,6 +62,10 @@ class Directory extends React.Component {
   contentListItem = (edge) => {
     return (
       <List.Item.Meta
+        style={{cursor: "pointer"}}
+        onClick={() =>
+          this.props.loadWidget("content", {swhid: edge.node.target.swhid})
+        }
         avatar={<Avatar icon={<FileOutlined />}
                        style={{ backgroundColor: '#1677FF' }}
                        shape="square"
@@ -86,7 +94,7 @@ class Directory extends React.Component {
         </Col>
         <Col className="gutter-row" span={19}>
           <Space direction="vertical">
-            <Text code>{this.props.dirSWHID}</Text>
+            <Text code>{this.props.variables.swhid}</Text>
             <Text type="secondary">{data.directory.entries.totalCount} Items</Text>
           </Space>
         </Col>
@@ -97,9 +105,9 @@ class Directory extends React.Component {
 
   render() {
     return (
-      <Widget heading={ "Directory View" }>
+      <Widget heading={ "Directory Widget" }>
         <PaginatedList query={DIR_QUERY}
-                       variables={{swhid: this.props.dirSWHID, first: 10}}
+                       variables={{swhid: this.props.variables.swhid, first: 10}}
                        edgesPath={'directory.entries.edges'}
                        pageInfoPath={'directory.entries.pageInfo'}
                        nodeRenderer={this.directoryItem}
@@ -109,4 +117,4 @@ class Directory extends React.Component {
   }
 }
 
-export default Directory;
+export default DirectoryWidget;
