@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Tag } from 'antd';
+import { Card, Row, Col, Tag, Avatar } from 'antd';
 
 class Widget extends React.Component {
 
@@ -9,9 +9,11 @@ class Widget extends React.Component {
 
   render() {
     return (
-      <Card hoverable title={ this.props.heading }>
-        { this.props.children }
-        <div style={{float: 'right'}}>
+      <Card title={ this.props.heading }>
+        <div>
+          { this.props.children }
+        </div>
+        <div>
           <Tag color="success">SWH APIs</Tag>
         </div>
       </Card>

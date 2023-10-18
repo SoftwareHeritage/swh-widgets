@@ -4,7 +4,7 @@ import useState from 'react';
 import { gql } from '@apollo/client';
 import PaginatedList from './PaginatedList';
 import Widget from './Widget';
-import { Button , Input, Row, Col, Skeleton, List, Avatar, Divider } from 'antd';
+import { Button , Input, Row, Col, Skeleton, List, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined, FolderOutlined } from '@ant-design/icons';
 
 
@@ -35,65 +35,75 @@ const DIR_QUERY = gql`
   }
 `;
 
+const { Text, Link } = Typography;
 
 class Directory extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dirSWHIDText: props.dirSWHID,
-      dirSWHIDVal: props.dirSWHID
-    };
   }
 
-  handleChange = (event) => {
-    this.setState({dirSWHIDText: event.target.value});
-  }
-
-  onLoadClicked = (event) => {
-    this.setState({dirSWHIDVal: this.state.dirSWHIDText});
-  }
-
-  directoryItem = (edge, index) => {
-    let avatar = <Avatar icon={<FileOutlined />}
-                         style={{ backgroundColor: '#1677FF' }}
-                         shape="square"
-                 />;
-    if (edge.node.target.type == "directory") {
-      avatar = <Avatar icon={<FolderOutlined />}
-                       style={{ backgroundColor: '#f56a00' }}
-                       shape="square"
-               />;
-    }
+  dirListItem = (edge) => {
     return (
       <List.Item.Meta
-        avatar={ avatar }
+        avatar={<Avatar icon={<FolderOutlined />}
+                        style={{ backgroundColor: '#f56a00' }}
+                        shape="square"
+                />}
         title={edge.node.name.text}
         description={edge.node.target.swhid}
       />
     );
   }
 
+  contentListItem = (edge) => {
+    return (
+      <List.Item.Meta
+        avatar={<Avatar icon={<FileOutlined />}
+                       style={{ backgroundColor: '#1677FF' }}
+                       shape="square"
+               />}
+        title={edge.node.name.text}
+        description={edge.node.target.swhid}
+      />
+    );
+  }
+
+  directoryItem = (edge, index) => {
+    if (edge.node.target.type == "directory") {
+      return this.dirListItem(edge);
+    }
+    return this.contentListItem(edge);
+  }
+
+  dirInfo = (data) => {
+    return (
+      <Row gutter={16}>
+        <Col className="gutter-row">
+          <Avatar icon={<FolderOutlined />}
+                  size={ 60 }
+                  style={{ backgroundColor: '#f56a00' }}
+          />
+        </Col>
+        <Col className="gutter-row" span={19}>
+          <Space direction="vertical">
+            <Text code>{this.props.dirSWHID}</Text>
+            <Text type="secondary">{data.directory.entries.totalCount} Items</Text>
+          </Space>
+        </Col>
+        <Divider />
+      </Row>
+    );
+  }
+
   render() {
     return (
       <Widget heading={ "Directory View" }>
-        <Row gutter={16}>
-          <Col className="gutter-row" span={18}>
-            <Input
-              value={this.state.dirSWHIDText}
-              autoFocus="autofocus"
-              onChange={this.handleChange}
-            />
-          </Col>
-          <Col className="gutter-row" span={6}>
-            <Button type="primary" onClick={this.onLoadClicked}>Load</Button>
-          </Col>
-        </Row>
-        <Divider />
         <PaginatedList query={DIR_QUERY}
-                       variables={{swhid: this.state.dirSWHIDVal, first: 10}}
+                       variables={{swhid: this.props.dirSWHID, first: 10}}
                        edgesPath={'directory.entries.edges'}
                        pageInfoPath={'directory.entries.pageInfo'}
-                       nodeRenderer={this.directoryItem} />
+                       nodeRenderer={this.directoryItem}
+                       infoRenderer={this.dirInfo} />
       </Widget>
     );
   }

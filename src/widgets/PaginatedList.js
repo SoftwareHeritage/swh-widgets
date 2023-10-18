@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
 import ErrorMsg from './ErrorMsg';
-import { List, Button, Spin } from 'antd';
+import { List, Button, Spin, Divider } from 'antd';
 
-export default function PaginatedList({query, variables, edgesPath, pageInfoPath, nodeRenderer}) {
+export default function PaginatedList({query, variables, edgesPath, pageInfoPath, nodeRenderer, infoRenderer}) {
   const { error, data, loading, fetchMore } = useQuery(query, { variables: variables });
 
   if (loading) return <div><Spin /></div>;
@@ -13,6 +13,11 @@ export default function PaginatedList({query, variables, edgesPath, pageInfoPath
   const pageInfo = pageInfoPath.split('.').reduce((prev, cur) => prev[cur], data);
 
   return (
+    <div>
+      {
+        infoRenderer ? infoRenderer(data): ''
+      }
+
     <List>
       {edgesList.map((edge, index) => (
         <List.Item key={index}>
@@ -41,5 +46,6 @@ export default function PaginatedList({query, variables, edgesPath, pageInfoPath
         </div>
       )}
     </List>
+    </div>
   );
 }
