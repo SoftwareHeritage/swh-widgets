@@ -5,18 +5,25 @@ import { gql } from '@apollo/client';
 import PaginatedList from './PaginatedList';
 import Widget from './Widget';
 import { Button , Input, Row, Col, Skeleton, List, Avatar, Divider, Typography, Space } from 'antd';
-import { FileOutlined, FolderOutlined } from '@ant-design/icons';
+import { FileOutlined } from '@ant-design/icons';
 import SingleItem from './SingleItem';
 
 const CONTENT_QUERY = gql`
   query getContent($swhid: SWHID!) {
     contentsBySWHID(swhid: $swhid) {
       swhid
+      length
+      data {
+        raw {
+          text
+        }
+        url
+      }
     }
   }
 `;
 
-const { Text, Link } = Typography;
+const { Text, Link, Paragraph } = Typography;
 
 class ContentWidget extends React.Component {
   constructor(props) {
@@ -28,8 +35,26 @@ class ContentWidget extends React.Component {
     return (
       <Row gutter={16}>
         <Col className="gutter-row">
-          This is the content widget {cn.swhid}
+          <Avatar icon={<FileOutlined />}
+                  size={ 60 }
+                  style={{ backgroundColor: '#1677FF' }}
+          />
         </Col>
+        <Col className="gutter-row" span={19}>
+          <Space direction="vertical">
+            <Text code>{cn.swhid}</Text>
+            <Text type="secondary">Length {cn.length} bytes</Text>
+            <Link href={cn.data.url}>Download</Link>
+          </Space>
+        </Col>
+        <Divider />
+        <Paragraph className="source-code" ellipsis={{
+          rows: 10,
+          expandable: true,
+          onExpand: this.typoExpand
+        }}>
+          { cn.data.raw? cn.data.raw.text: <Link href={cn.data.url}>Too big file to show. Download instead</Link> }
+        </Paragraph>
       </Row>
     );
   }

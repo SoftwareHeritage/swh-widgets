@@ -29,7 +29,7 @@ const SEARCH_QUERY = gql`
 const { Text, Link } = Typography;
 
 
-class SearchOrigins extends React.Component {
+class SearchWidget extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -40,9 +40,6 @@ class SearchOrigins extends React.Component {
       <List.Item.Meta
         title={edge.node.url}
       />
-      // <div key={index}>
-      //   <Text>{edge.node.url}</Text>
-      // </div>
     );
   }
 
@@ -56,7 +53,7 @@ class SearchOrigins extends React.Component {
           />
         </Col>
         <Col className="gutter-row" span={19}>
-          <Text>Search results for </Text><Text code>{this.props.query}</Text>
+          <Text>Search results for </Text><Text code>{this.props.variables.query}</Text>
         </Col>
         <Divider />
       </Row>
@@ -67,7 +64,7 @@ class SearchOrigins extends React.Component {
     return (
       <Widget heading={"SWH search"}>
         <PaginatedList query={SEARCH_QUERY}
-                       variables={{query: this.props.query, first: 10}}
+                       variables={{query: this.props.variables.query, first: 10}}
                        edgesPath={'originSearch.edges'}
                        pageInfoPath={'originSearch.pageInfo'}
                        nodeRenderer={this.resultItem}
@@ -77,4 +74,4 @@ class SearchOrigins extends React.Component {
   }
 }
 
-export default SearchOrigins;
+export default SearchWidget;

@@ -6,7 +6,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { relayStylePagination } from "@apollo/client/utilities";
 
 const client = new ApolloClient({
-  uri: 'https://archive.softwareheritage.org/graphql/',
+  uri: 'https:archive.softwareheritage.org/graphql/',
+  // uri: 'http://127.0.0.1:8000/',
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

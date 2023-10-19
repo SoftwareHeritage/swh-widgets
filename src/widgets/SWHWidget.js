@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Card, Row, Col, Tag, Avatar } from 'antd';
 import DirectoryWidget from './Directory';
 import ContentWidget from './Content';
+import SearchWidget from './Search';
 import WelcomeWidget from './Welcome';
 
 
 const mapping = {
   directory: DirectoryWidget,
-  content: ContentWidget
+  content: ContentWidget,
+  search: SearchWidget
 };
 
 class SWHWidget extends React.Component {

@@ -13,12 +13,17 @@ function App() {
       {/* <Col className="gutter-row" span={8}> */}
       {/*   <SearchOrigins query="swh-storage/" /> */}
       {/* </Col> */}
-      <Col className="gutter-row" span={8}>
-        <SWHWidget type="directory" variables={{"swhid": "swh:1:dir:4c1394ffe602a0f9c6c5fa43d3ee91577f0b9003"}} />
-      </Col>
       {/* <Col className="gutter-row" span={8}> */}
-      {/*   <Directory dirSWHID="swh:1:dir:4c1394ffe602a0f9c6c5fa43d3ee91577f0b9003" /> */}
+      {/*   <SWHWidget type="directory" variables={{"swhid": "swh:1:dir:4c1394ffe602a0f9c6c5fa43d3ee91577f0b9003"}} /> */}
       {/* </Col> */}
+
+      <Col className="gutter-row" span={8}>
+        <SWHWidget type="content" variables={{"swhid": "swh:1:cnt:61c750e88335e4a32e34b04d8509c45636644f37"}} />
+      </Col>
+
+      <Col className="gutter-row" span={8}>
+        <SWHWidget type="search" variables={{"query": "swh-storage/"}} />
+      </Col>
 
       {/* <Col className="gutter-row" span={8}> */}
       {/*   <SearchOrigins /> */}
