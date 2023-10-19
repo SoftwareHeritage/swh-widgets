@@ -16,4 +16,14 @@ code {
     white-space: pre-wrap;
     background-color: #F1F2F4;
     padding: 10px;
+    width: 100%;
+}
+
+.clickable {
+    padding: 5px;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    background-color: #F1F2F4;
 }

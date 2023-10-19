@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import useState from 'react';
+import React from 'react';
 import { gql } from '@apollo/client';
 import PaginatedList from './PaginatedList';
-import Widget from './Widget';
-import { Button , Input, Row, Col, Skeleton, List, Avatar, Divider, Typography } from 'antd';
+import { Row, Col, List, Avatar, Divider, Typography } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 
@@ -26,19 +23,24 @@ const SEARCH_QUERY = gql`
 `;
 
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 
 class SearchWidget extends React.Component {
   constructor(props) {
     super(props);
+    this.props.setHeading("Search Widget");
   }
 
 
   resultItem = (edge, index) => {
     return (
       <List.Item.Meta
+        className="clickable"
         title={edge.node.url}
+        onClick={() =>
+          this.props.loadWidget("origin", {url: edge.node.url})
+        }
       />
     );
   }
@@ -62,14 +64,12 @@ class SearchWidget extends React.Component {
 
   render() {
     return (
-      <Widget heading={"SWH search"}>
-        <PaginatedList query={SEARCH_QUERY}
-                       variables={{query: this.props.variables.query, first: 10}}
-                       edgesPath={'originSearch.edges'}
-                       pageInfoPath={'originSearch.pageInfo'}
-                       nodeRenderer={this.resultItem}
-                       infoRenderer={this.searchInfo} />
-      </Widget>
+      <PaginatedList query={SEARCH_QUERY}
+                     variables={{query: this.props.variables.query, first: 10}}
+                     edgesPath={'originSearch.edges'}
+                     pageInfoPath={'originSearch.pageInfo'}
+                     nodeRenderer={this.resultItem}
+                     infoRenderer={this.searchInfo} />
     );
   }
 }

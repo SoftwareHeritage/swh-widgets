@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import useState from 'react';
+import React from 'react';
 import { gql } from '@apollo/client';
-import PaginatedList from './PaginatedList';
-import Widget from './Widget';
-import { Button , Input, Row, Col, Skeleton, List, Avatar, Divider, Typography, Space } from 'antd';
+import {  Row, Col, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined } from '@ant-design/icons';
 import SingleItem from './SingleItem';
 
@@ -28,6 +24,7 @@ const { Text, Link, Paragraph } = Typography;
 class ContentWidget extends React.Component {
   constructor(props) {
     super(props);
+    this.props.setHeading("Content Widget");
   }
 
   contentInfo = (content) => {
@@ -42,6 +39,7 @@ class ContentWidget extends React.Component {
         </Col>
         <Col className="gutter-row" span={19}>
           <Space direction="vertical">
+            {this.props.variables.name? <Text strong>{this.props.variables.name}</Text>:''}
             <Text code>{cn.swhid}</Text>
             <Text type="secondary">Length {cn.length} bytes</Text>
             <Link href={cn.data.url}>Download</Link>
@@ -53,7 +51,7 @@ class ContentWidget extends React.Component {
           expandable: true,
           onExpand: this.typoExpand
         }}>
-          { cn.data.raw? cn.data.raw.text: <Link href={cn.data.url}>Too big file to show. Download instead</Link> }
+          { cn.data.raw? cn.data.raw.text: <Link href={cn.data.url}>File is too big to show. Download instead</Link> }
         </Paragraph>
       </Row>
     );
@@ -61,14 +59,12 @@ class ContentWidget extends React.Component {
 
   render() {
     return (
-      <Widget heading={ "Content Widget" }>
-        <SingleItem
-          query={CONTENT_QUERY}
-          variables={{swhid: this.props.variables.swhid}}
-          itemPath={'contentsBySWHID'}
-          itemRenderer={this.contentInfo}
-        />
-      </Widget>
+      <SingleItem
+        query={CONTENT_QUERY}
+        variables={{swhid: this.props.variables.swhid}}
+        itemPath={'contentsBySWHID'}
+        itemRenderer={this.contentInfo}
+      />
     );
   }
 }

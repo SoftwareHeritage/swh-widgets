@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import useState from 'react';
+import React from 'react';
 import { gql } from '@apollo/client';
 import PaginatedList from './PaginatedList';
-import Widget from './Widget';
-import { Button , Input, Row, Col, Skeleton, List, Avatar, Divider, Typography, Space } from 'antd';
+import { Row, Col, List, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined, FolderOutlined } from '@ant-design/icons';
 
 
@@ -35,19 +32,20 @@ const DIR_QUERY = gql`
   }
 `;
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 class DirectoryWidget extends React.Component {
   constructor(props) {
     super(props);
+    this.props.setHeading("Directory Widget");
   }
 
   dirListItem = (edge) => {
     return (
       <List.Item.Meta
-        style={{cursor: "pointer"}}
+        className="clickable"
         onClick={() =>
-          this.props.loadWidget("directory", {swhid: edge.node.target.swhid})
+          this.props.loadWidget("directory", {swhid: edge.node.target.swhid, name: edge.node.name.text})
         }
         avatar={<Avatar icon={<FolderOutlined />}
                         style={{ backgroundColor: '#f56a00' }}
@@ -62,9 +60,9 @@ class DirectoryWidget extends React.Component {
   contentListItem = (edge) => {
     return (
       <List.Item.Meta
-        style={{cursor: "pointer"}}
+        className="clickable"
         onClick={() =>
-          this.props.loadWidget("content", {swhid: edge.node.target.swhid})
+          this.props.loadWidget("content", {swhid: edge.node.target.swhid, name: edge.node.name.text})
         }
         avatar={<Avatar icon={<FileOutlined />}
                        style={{ backgroundColor: '#1677FF' }}
@@ -77,7 +75,7 @@ class DirectoryWidget extends React.Component {
   }
 
   directoryItem = (edge, index) => {
-    if (edge.node.target.type == "directory") {
+    if (edge.node.target.type === "directory") {
       return this.dirListItem(edge);
     }
     return this.contentListItem(edge);
@@ -94,6 +92,7 @@ class DirectoryWidget extends React.Component {
         </Col>
         <Col className="gutter-row" span={19}>
           <Space direction="vertical">
+            {this.props.variables.name? <Text strong>{this.props.variables.name}</Text>:''}
             <Text code>{this.props.variables.swhid}</Text>
             <Text type="secondary">{data.directory.entries.totalCount} Items</Text>
           </Space>
@@ -105,14 +104,12 @@ class DirectoryWidget extends React.Component {
 
   render() {
     return (
-      <Widget heading={ "Directory Widget" }>
-        <PaginatedList query={DIR_QUERY}
-                       variables={{swhid: this.props.variables.swhid, first: 10}}
-                       edgesPath={'directory.entries.edges'}
-                       pageInfoPath={'directory.entries.pageInfo'}
-                       nodeRenderer={this.directoryItem}
-                       infoRenderer={this.dirInfo} />
-      </Widget>
+      <PaginatedList query={DIR_QUERY}
+                     variables={{swhid: this.props.variables.swhid, first: 10}}
+                     edgesPath={'directory.entries.edges'}
+                     pageInfoPath={'directory.entries.pageInfo'}
+                     nodeRenderer={this.directoryItem}
+                     infoRenderer={this.dirInfo} />
     );
   }
 }

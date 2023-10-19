@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import ErrorMsg from './ErrorMsg';
-import { List, Button, Spin, Divider } from 'antd';
+import { List, Button, Spin } from 'antd';
 
 export default function PaginatedList({query, variables, edgesPath, pageInfoPath, nodeRenderer, infoRenderer}) {
   const { error, data, loading, fetchMore } = useQuery(query, { variables: variables });
