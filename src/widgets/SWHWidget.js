@@ -26,13 +26,14 @@ class SWHWidget extends React.Component {
       variables: this.props.variables,
       history: [[this.props.type,
                  this.props.variables]],
-      historyIndex: 0
+      historyIndex: 0,
+      context: []
     };
   }
 
   loadWidget = (type, variables, inHistory=true) => {
     if (inHistory === true) {
-      this.state.history.push([type, variables]);
+      this.state.history.splice(this.state.historyIndex+1, 0, [type, variables]);
       this.state.historyIndex += 1;
     }
 
@@ -84,6 +85,12 @@ class SWHWidget extends React.Component {
 
   render() {
     const Component = mapping[this.state.type] || WelcomeWidget;
+    if (this.props.context == true) {
+      return (
+        <Component variables={this.state.variables} loadWidget={this.loadWidget} setHeading={this.setHeading} />
+      );
+    }
+
     return (
       <Card title={ this.getTitle() }>
         <Component variables={this.state.variables} loadWidget={this.loadWidget} setHeading={this.setHeading} />
