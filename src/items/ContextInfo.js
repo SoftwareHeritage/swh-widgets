@@ -18,7 +18,10 @@ class ContextInfo  extends React.Component {
     return (
       <Breadcrumb
         items={
-          this.state.contextList.map((item) => {
+          this.state.contextList.map((item, index) => {
+            if (index == 2) {
+              return {title: item};
+            }
             return {title: item, href: "#"};
           })}
       />

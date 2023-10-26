@@ -4,6 +4,7 @@ import PaginatedList from './PaginatedList';
 import { Row, Col, List, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined, FolderOutlined } from '@ant-design/icons';
 import ContextInfo from '../items/ContextInfo';
+import BaseWidget from './Base';
 
 
 const DIR_QUERY = gql`
@@ -35,10 +36,13 @@ const DIR_QUERY = gql`
 
 const { Text } = Typography;
 
-class DirectoryWidget extends React.Component {
+class DirectoryWidget extends BaseWidget {
+
   constructor(props) {
     super(props);
-    this.props.setHeading("Directory Widget");
+    this.state = {
+      heading: "Directory Widget"
+    };
   }
 
   dirListItem = (edge) => {
@@ -95,15 +99,13 @@ class DirectoryWidget extends React.Component {
           <Space direction="vertical">
             {this.props.variables.name?
              /* <Text strong>{this.props.variables.name}</Text>:'' */
-             <ContextInfo contextList={["Path1", "Path2", "Path3"]} />
-             :''
+             <ContextInfo contextList={this.getparents(this.props.variables.name)} />: ''
             }
+
             <Text code>{this.props.variables.swhid}</Text>
             <Text type="secondary">{data.directory.entries.totalCount} Items</Text>
-
           </Space>
         </Col>
-        <Divider />
       </Row>
     );
   }

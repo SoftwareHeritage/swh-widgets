@@ -13,11 +13,6 @@ export default function PaginatedList({query, variables, edgesPath, pageInfoPath
   const pageInfo = pageInfoPath.split('.').reduce((prev, cur) => prev[cur], data);
 
   return (
-    <div>
-      {
-        infoRenderer ? infoRenderer(data): ''
-      }
-
     <List>
       {edgesList.map((edge, index) => (
         <List.Item key={index}>
@@ -41,11 +36,10 @@ export default function PaginatedList({query, variables, edgesPath, pageInfoPath
               })
             }
           >
-            Load More
+            Load More..
           </Button>
         </div>
       )}
     </List>
-    </div>
   );
 }

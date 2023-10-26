@@ -3,6 +3,8 @@ import { gql } from '@apollo/client';
 import {  Row, Col, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined } from '@ant-design/icons';
 import SingleItem from './SingleItem';
+import ContextInfo from '../items/ContextInfo';
+import BaseWidget from './Base';
 
 const CONTENT_QUERY = gql`
   query getContent($swhid: SWHID!) {
@@ -21,7 +23,7 @@ const CONTENT_QUERY = gql`
 
 const { Text, Link, Paragraph } = Typography;
 
-class ContentWidget extends React.Component {
+class ContentWidget extends BaseWidget {
   constructor(props) {
     super(props);
     this.props.setHeading("Content Widget");
@@ -39,7 +41,7 @@ class ContentWidget extends React.Component {
         </Col>
         <Col className="gutter-row" span={19}>
           <Space direction="vertical">
-            {this.props.variables.name? <Text strong>{this.props.variables.name}</Text>:''}
+            {this.props.variables.name? <ContextInfo contextList={this.getparents(this.props.variables.name)} />: ''}
             <Text code>{cn.swhid}</Text>
             <Text type="secondary">Length {cn.length} bytes</Text>
             <Link href={cn.data.url}>Download</Link>

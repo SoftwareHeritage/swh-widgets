@@ -5,6 +5,7 @@ import ContentWidget from './Content';
 import SearchWidget from './Search';
 import WelcomeWidget from './Welcome';
 import OriginWidget from './Origin';
+import VisitWidget from './Visit';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -14,6 +15,7 @@ const mapping = {
   content: ContentWidget,
   search: SearchWidget,
   origin: OriginWidget,
+  visit: VisitWidget,
 };
 
 class SWHWidget extends React.Component {
@@ -22,12 +24,11 @@ class SWHWidget extends React.Component {
     super(props);
     this.state = {
       type: this.props.type,
-      heading: "SWH Widget",
       variables: this.props.variables,
+      data: this.props.data,
       history: [[this.props.type,
                  this.props.variables]],
       historyIndex: 0,
-      context: []
     };
   }
 
@@ -41,10 +42,6 @@ class SWHWidget extends React.Component {
       type: type,
       variables: variables,
     });
-  }
-
-  setHeading = (title) => {
-    this.setState({heading: title});
   }
 
   onBackClicked = () => {
@@ -67,37 +64,17 @@ class SWHWidget extends React.Component {
     }
   }
 
-  getTitle = () => {
-    return (
-      <Title level={4}>
-        <Space>
-          <Badge count={this.state.historyIndex} size="small">
-            <ArrowLeftOutlined className="clickable" onClick={this.onBackClicked} />
-          </Badge>
-          <Badge count={this.state.history.length-this.state.historyIndex-1} size="small">
-            <ArrowRightOutlined className="clickable" onClick={this.onForwardClicked} />
-          </Badge>
-          {this.state.heading}
-        </Space>
-      </Title>
-    );
+  setHeading = () => {
   }
 
   render() {
     const Component = mapping[this.state.type] || WelcomeWidget;
-    if (this.props.context == true) {
-      return (
-        <Component variables={this.state.variables} loadWidget={this.loadWidget} setHeading={this.setHeading} />
-      );
-    }
-
     return (
-      <Card title={ this.getTitle() }>
-        <Component variables={this.state.variables} loadWidget={this.loadWidget} setHeading={this.setHeading} />
-        <div>
-          <Tag color="success">SWH APIs</Tag>
-        </div>
-      </Card>
+      // router
+      <div>
+        dfd
+        <Component variables={this.state.variables} data={this.props.data} loadWidget={this.loadWidget} setHeading={this.setHeading} />
+      </div>
     );
   }
 }
