@@ -43,7 +43,7 @@ class OriginWidget extends React.Component {
 
   originInfo = (origin) => {
     return (
-      <div>
+      <Space direction="vertical">
         <Row gutter={16}>
           <Col className="gutter-row">
             <Avatar icon={<DatabaseOutlined />}
@@ -62,13 +62,14 @@ class OriginWidget extends React.Component {
           {/* <Divider /> */}
           <Divider />
         </Row>
+        <Row>
         {
           origin.latestSnapshot.headBranch.target.node.directory?
             <SWHWidget type="directory" variables={{"swhid": origin.latestSnapshot.headBranch.target.node.directory.swhid}} context={true} />
           :<Text level={5}>Unable to find the root directory</Text>
         }
-
-      </div>
+        </Row>
+      </Space>
     );
   }
 

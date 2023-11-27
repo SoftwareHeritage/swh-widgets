@@ -3,6 +3,8 @@ import { gql } from '@apollo/client';
 import {  Row, Col, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined } from '@ant-design/icons';
 import SingleItem from './SingleItem';
+import ContextInfo from '../items/ContextInfo';
+import ErrorMsg from './ErrorMsg';
 
 const CONTENT_QUERY = gql`
   query getContent($swhid: SWHID!) {
@@ -28,7 +30,10 @@ class ContentWidget extends React.Component {
   }
 
   contentInfo = (content) => {
-    const cn = content[0];  // This returns a simple list
+    if (content.length === 0) {
+      return ErrorMsg("No content found for this SWHID");
+    }
+    const cn = content[0];   // This returns a simple list
     return (
       <Row gutter={16}>
         <Col className="gutter-row">
@@ -39,19 +44,21 @@ class ContentWidget extends React.Component {
         </Col>
         <Col className="gutter-row" span={19}>
           <Space direction="vertical">
-            {this.props.variables.name? <Text strong>{this.props.variables.name}</Text>:''}
+            {this.props.variables.name?
+             <ContextInfo contextList={["Path1", "Path2", this.props.variables.name]} />
+             :''}
             <Text code>{cn.swhid}</Text>
             <Text type="secondary">Length {cn.length} bytes</Text>
-            <Link href={cn.data.url}>Download</Link>
+            {cn.length>0?<Link href={cn.data.url}>Download</Link>:''}
           </Space>
         </Col>
         <Divider />
-        <Paragraph className="source-code" ellipsis={{
+        <Paragraph className={cn.length>0?"source-code":''} ellipsis={{
           rows: 10,
           expandable: true,
           onExpand: this.typoExpand
         }}>
-          { cn.data.raw? cn.data.raw.text: <Link href={cn.data.url}>File is too big to show. Download instead</Link> }
+          { cn.data.raw? cn.data.raw.text: <Link href={cn.data.url}>File is too big to display. Download instead</Link> }
         </Paragraph>
       </Row>
     );

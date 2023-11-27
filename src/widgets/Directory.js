@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 import PaginatedList from './PaginatedList';
 import { Row, Col, List, Avatar, Divider, Typography, Space } from 'antd';
 import { FileOutlined, FolderOutlined } from '@ant-design/icons';
-import ContextInfo from '../items/ContextInfo';
+// import ContextInfo from '../items/ContextInfo';
 
 
 const DIR_QUERY = gql`
@@ -94,8 +94,8 @@ class DirectoryWidget extends React.Component {
         <Col className="gutter-row" span={19}>
           <Space direction="vertical">
             {this.props.variables.name?
-             /* <Text strong>{this.props.variables.name}</Text>:'' */
-             <ContextInfo contextList={["Path1", "Path2", "Path3"]} />
+             <Text strong>{this.props.variables.name}</Text>
+             /* <ContextInfo contextList={["Path1", "Path2", this.props.variables.name]} /> */
              :''
             }
             <Text code>{this.props.variables.swhid}</Text>

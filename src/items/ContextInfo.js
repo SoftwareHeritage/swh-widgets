@@ -10,16 +10,16 @@ class ContextInfo  extends React.Component {
     };
   }
 
-  itemRender(item) {
-    return "Hello";
-  }
-
   render() {
     return (
       <Breadcrumb
         items={
-          this.state.contextList.map((item) => {
-            return {title: item, href: "#"};
+          this.state.contextList.map((item, i) => {
+            if (i===this.state.contextList.length-1) {
+              return {title: item};
+            } else {
+              return {title: item, href: "#"};
+            }
           })}
       />
     );

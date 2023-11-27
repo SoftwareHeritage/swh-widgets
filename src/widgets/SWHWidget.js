@@ -5,6 +5,7 @@ import ContentWidget from './Content';
 import SearchWidget from './Search';
 import WelcomeWidget from './Welcome';
 import OriginWidget from './Origin';
+import VisitsWidget from './Visits';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -14,6 +15,7 @@ const mapping = {
   content: ContentWidget,
   search: SearchWidget,
   origin: OriginWidget,
+  visits: VisitsWidget,
 };
 
 class SWHWidget extends React.Component {
@@ -33,14 +35,21 @@ class SWHWidget extends React.Component {
 
   loadWidget = (type, variables, inHistory=true) => {
     if (inHistory === true) {
-      this.state.history.splice(this.state.historyIndex+1, 0, [type, variables]);
-      this.state.historyIndex += 1;
+      const newIndex = this.state.historyIndex + 1;
+      let newHistory = this.state.history.slice();
+      newHistory.splice(newIndex, 0, [type, variables]);
+      this.setState({
+        history: newHistory,
+        historyIndex: newIndex,
+        type: type,
+        variables: variables,
+      });
+    } else {
+      this.setState({
+        type: type,
+        variables: variables,
+      });
     }
-
-    this.setState({
-      type: type,
-      variables: variables,
-    });
   }
 
   setHeading = (title) => {
@@ -49,21 +58,23 @@ class SWHWidget extends React.Component {
 
   onBackClicked = () => {
     if (this.state.historyIndex > 0) {
-      // Ge the item and
-      this.state.historyIndex -= 1;
-      const historyItem = this.state.history[this.state.historyIndex];
-      // const type, vars = this.state.history[this.state.historyIndex];
+      const newIndex = this.state.historyIndex - 1;
+      const historyItem = this.state.history[newIndex];
       this.loadWidget(historyItem[0], historyItem[1], false);
+      this.setState({
+        historyIndex: newIndex
+      });
     }
   }
 
   onForwardClicked = () => {
     if (this.state.historyIndex < (this.state.history.length-1)) {
-      // Ge the item and
-      this.state.historyIndex += 1;
-      const historyItem = this.state.history[this.state.historyIndex];
-      // const type, vars = this.state.history[this.state.historyIndex];
+      const newIndex = this.state.historyIndex + 1;
+      const historyItem = this.state.history[newIndex];
       this.loadWidget(historyItem[0], historyItem[1], false);
+      this.setState({
+        historyIndex: newIndex
+      });
     }
   }
 
@@ -85,7 +96,7 @@ class SWHWidget extends React.Component {
 
   render() {
     const Component = mapping[this.state.type] || WelcomeWidget;
-    if (this.props.context == true) {
+    if (this.props.context === true) {
       return (
         <Component variables={this.state.variables} loadWidget={this.loadWidget} setHeading={this.setHeading} />
       );
@@ -93,10 +104,13 @@ class SWHWidget extends React.Component {
 
     return (
       <Card title={ this.getTitle() }>
+        {/* Add a router here */}
         <Component variables={this.state.variables} loadWidget={this.loadWidget} setHeading={this.setHeading} />
-        <div>
-          <Tag color="success">SWH APIs</Tag>
-        </div>
+          <Tag color="success">
+            <a href="https://archive.softwareheritage.org/" target="_blank" rel="noreferrer">
+              SWH APIs
+            </a>
+          </Tag>
       </Card>
     );
   }

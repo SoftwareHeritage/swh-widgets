@@ -1,8 +1,15 @@
-export default function ErrorMsg(error) {
-  if(!error) {
-    error = {
-      "message": "The request Object is not available"
-    };
+import {  Typography } from 'antd';
+
+const { Text, Paragraph } = Typography;
+
+export default function ErrorMsg(msg) {
+  if(!msg) {
+    msg = "An unknown error";
   }
-  return <div>Error loading the object</div>;
+  return (
+    <Paragraph>
+      <Text type="danger">Error: </Text>
+      <Text code>{msg}</Text>
+    </Paragraph>
+  );
 }

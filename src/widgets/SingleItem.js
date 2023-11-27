@@ -7,7 +7,7 @@ export default function SingleItem({query, variables,  itemPath, itemRenderer}) 
   const { error, data, loading } = useQuery(query, { variables: variables });
   if (loading) return <div><Spin /></div>;
 
-  if (error) return ErrorMsg(error);
+  if (error) return ErrorMsg(error.message);
 
   const item = itemPath.split('.').reduce((prev, cur) => prev[cur], data);
   return (

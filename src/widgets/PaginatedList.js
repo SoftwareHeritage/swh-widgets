@@ -18,34 +18,34 @@ export default function PaginatedList({query, variables, edgesPath, pageInfoPath
         infoRenderer ? infoRenderer(data): ''
       }
 
-    <List>
-      {edgesList.map((edge, index) => (
-        <List.Item key={index}>
-          {nodeRenderer(edge, index)}
-        </List.Item>
+      <List>
+        {edgesList.map((edge, index) => (
+          <List.Item key={index}>
+            {nodeRenderer(edge, index)}
+          </List.Item>
 
-      ))}
-      {pageInfo["hasNextPage"] && (
-        <div
-          style={{
-            textAlign: 'center',
-            marginTop: 12,
-            height: 32,
-            lineHeight: '32px',
-          }}
-        >
-          <Button
-            onClick={() =>
-              fetchMore({
-                variables: {after: pageInfo["endCursor"]}
-              })
-            }
+        ))}
+        {pageInfo["hasNextPage"] && (
+          <div
+            style={{
+              textAlign: 'center',
+              marginTop: 12,
+              height: 32,
+              lineHeight: '32px',
+            }}
           >
-            Load More
-          </Button>
-        </div>
-      )}
-    </List>
+            <Button
+              onClick={() =>
+                fetchMore({
+                  variables: {after: pageInfo["endCursor"]}
+                })
+              }
+            >
+              Load More
+            </Button>
+          </div>
+        )}
+      </List>
     </div>
   );
 }

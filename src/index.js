@@ -16,6 +16,11 @@ const client = new ApolloClient({
           origins: relayStylePagination(),
         }
       },
+      Origin: {
+        fields: {
+          visits: relayStylePagination(),
+        }
+      },
       Directory: {
         fields: {
           entries: relayStylePagination(),
