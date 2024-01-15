@@ -1,4 +1,8 @@
-# Run server
+# Install
+
+``yarn install swh-widget``
+
+# Run server locally
 
 ### `yarn start`
 Open [http://localhost:3000](http://localhost:3000).
